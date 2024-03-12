@@ -34,10 +34,21 @@ app.use("/api/v1" , bajaj );
 
 
 // default route
-app.get("/" , (req,res,next) => {
-    return res.end("<h1>Server is running</h1>")
-})
+// Define a middleware function to handle all GET requests
+app.use((req, res, next) => {
+    if (req.method === 'GET') {
+        // Send the same response for all GET requests
+        return res.json({
+            responseStatus: "-6",
+            responseMessage: "Only Post Method Allowed"
+        })
 
+    } 
+    else {
+        // Pass the request to the next middleware
+        next();
+    }
+});
 
 app.listen(process.env.PORT , () => {
     console.log(`Server is running on PORT : ${process.env.PORT}`)
