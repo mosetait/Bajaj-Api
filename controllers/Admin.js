@@ -46,7 +46,8 @@ exports.createProdcuctInfo = async (req, res) => {
 
         
         // Connection with the database (using connection pooling)
-        const uri = `mongodb+srv://${username}:${password}@bajajapi.9enhja0.mongodb.net/?retryWrites=true&w=majority&appName=BajajApi`;
+        const uri = `mongodb+srv://${username}:${password}@moseta.8igy2dw.mongodb.net/?retryWrites=true&w=majority&appName=Moseta`;
+        
         const client = new MongoClient(uri);
 
         try {
