@@ -1,6 +1,5 @@
 const express = require("express");
 const app = express();
-const cors = require("cors");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const helmet = require("helmet");
@@ -16,12 +15,6 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(helmet());
 app.use(morgan("combined"));
 
-// app.use(
-//     cors({
-//         origin: "http://localhost:3000",
-//         credentials: true,
-//     })
-// );
 
 
 // Routes
@@ -50,6 +43,8 @@ app.use((req, res, next) => {
     }
 });
 
-app.listen(process.env.PORT , () => {
-    console.log(`Server is running on PORT : ${process.env.PORT}`)
+const PORT = process.env.PORT || 8000
+
+app.listen(PORT , () => {
+    console.log(`Server is running on PORT : ${PORT}`)
 })
