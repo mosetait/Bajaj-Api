@@ -1,7 +1,9 @@
 const crypto = require("crypto");
 const secretKey = process.env.ACCESS_KEY;
+const jwt = require("jsonwebtoken");
+const User = require("../models/User");
 
-exports.auth = async (req, res, next) => {
+exports.isBajaj = async (req, res, next) => {
 
     try {
 
@@ -41,7 +43,9 @@ exports.auth = async (req, res, next) => {
 
         // Continue with the next middleware or route handler
         next();
-    } catch (error) {
+
+    } 
+    catch (error) {
         // Handle errors
         console.error(error);
         res.status(500).json({
@@ -49,4 +53,77 @@ exports.auth = async (req, res, next) => {
             responseMessage: `Internal Server Error : ${error}`,
         });
     }
+};
+
+
+
+// is user logged in 
+exports.isAuth = async (req , res , next) => {
+
+    try {
+
+        const {token} = req.cookies;
+
+        if(!token) {
+            return res.status(401).json({
+                message: "Please Login First",
+                success: false
+            })
+        }
+
+          
+
+        // Verifying Token
+        try {
+            
+            const decode = jwt.verify(token , process.env.JWT_SECRET);
+
+            req.user = decode;
+
+        } catch (error) {
+            console.log(error)
+            return res.status(401).json({ 
+                success: false, 
+                message: "token is invalid" 
+            });
+
+        }
+
+        // If JWT is valid, move on to the next middleware or request handler
+		next();
+
+    } 
+    catch (error) {
+        console.log(error);
+        return res.status(401).json({
+			success: false,
+			message: `Something Went Wrong While Validating the Token`,
+		});
+    }
+
+}
+
+
+
+// isAdmin
+exports.isAdmin = async (req, res, next) => {
+	try {
+		const userDetails = await User.findOne({ email: req.user.email });
+
+		if (userDetails.role !== "admin") {
+			return res.status(401).json({
+				success: false,
+				message: "This is a Protected Route for Admin",
+			});
+		}
+
+		next();
+
+	} catch (error) {
+        console.log(error)
+		return res.status(500).json({ 
+            success: false, 
+            message: `User Role Can't be Verified` 
+        });
+	}
 };

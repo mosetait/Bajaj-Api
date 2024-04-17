@@ -4,28 +4,19 @@ const productInfoSchema = new mongoose.Schema({
 
     serialNumber: {
         type: String,
-        required: true,
+        required: [true , "Please enter serial number"],
         unique: true
     },
 
     materialCode: {
         type: String,
-        required: true,
+        required: [true , "Please enter material code"],
     },
     
-    dealerCode: {
-        type: String,
-        required: true,
-    },
-    
-    dealerId: {
-        type: String,
-        required: true,
-    },
 
     itemType:{
         type: String,
-        required: true,
+        required: [true , "Please enter item type"],
         default: ""
     },
 
@@ -34,25 +25,26 @@ const productInfoSchema = new mongoose.Schema({
         // required: true
     },
 
-    assignedTo:{
-        type: String,
+    stockist:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Stockist",
         required: true,
-        default: ""
     },
 
     itemModel: {
         type: String,
-        required: true,
+        required: [true , "Please enter item model"],
         default: ""
     },
 
-    isSold:{
+    isValidated:{
         type: Boolean,
         required: true,
+        default: false
     }
 
 });
 
 
 
-module.exports = mongoose.model("ProductInfo", productInfoSchema);
+module.exports = mongoose.model("Product", productInfoSchema);
