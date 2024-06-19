@@ -52,6 +52,11 @@ const stockistSchema = new mongoose.Schema({
         required: [true , "Please enter dealer code.\n"]
     },
 
+    modelCodeForValidation:{
+        type: String,
+        required : true
+    },
+
     products: {
         type: [mongoose.Schema.Types.ObjectId],
         ref: "Products"

@@ -13,7 +13,7 @@ exports.createStockist = async (req , res) => {
             principalPlaceOfBusiness,
             state,
             districts,
-            email,
+            modelCodeForValidation,
             dealerCode
         } = req.body;
 
@@ -25,7 +25,8 @@ exports.createStockist = async (req , res) => {
             !principalPlaceOfBusiness ||
             !state ||
             !districts ||
-            !dealerCode
+            !dealerCode ||
+            !modelCodeForValidation
         ){
             return res.status(401).json({
                 success: false,
@@ -57,7 +58,8 @@ exports.createStockist = async (req , res) => {
             principalPlaceOfBusiness,
             state,
             districts,
-            dealerCode
+            dealerCode,
+            modelCodeForValidation
         })
 
         return res.status(200).json({
